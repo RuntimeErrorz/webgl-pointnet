@@ -16,10 +16,10 @@ let scene, mapScene;
 let controls, stats;
 let frame;
 
-let max_x = -Infinity;
-let max_y = -Infinity;
-let min_x = Infinity;
-let min_y = Infinity;
+let maxX = -Infinity;
+let maxY = -Infinity;
+let minX = Infinity;
+let minY = Infinity;
 
 let halfFrameLength = 20;
 
@@ -30,14 +30,12 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
 function calcFrameVertex(flag) {
-  let camera_x = camera.position.x;
-  let camera_y = camera.position.y;
+  let cameraX = camera.position.x;
+  let cameraY = camera.position.y;
   let x =
-    ((camera_x - min_x) / (max_x - min_x)) * 2 * halfsideLength -
-    halfsideLength;
+    ((cameraX - minX) / (maxX - minX)) * 2 * halfsideLength - halfsideLength;
   let y =
-    ((camera_y - min_y) / (max_y - min_y)) * 2 * halfsideLength -
-    halfsideLength;
+    ((cameraY - minY) / (maxY - minY)) * 2 * halfsideLength - halfsideLength;
   let x1 = x - halfFrameLength;
   let x2 = x + halfFrameLength;
   let y1 = y - halfFrameLength;
@@ -119,14 +117,14 @@ function initModel() {
   let loader = new PLYLoader();
   return new Promise((resolve) => {
     for (let i = 0; i < 1; ++i) {
-      loader.load(`../data/division/${i}.ply`, (geometry) => {
+      loader.load("../data/Toronto_3D/dwarf.ply", (geometry) => {
         for (let j = 0; j < geometry.attributes.position.count; j += 3) {
           let x = geometry.attributes.position.array[j];
           let y = geometry.attributes.position.array[j + 1];
-          max_x = Math.max(max_x, x);
-          max_y = Math.max(max_y, y);
-          min_x = Math.min(min_x, x);
-          min_y = Math.min(min_y, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
         }
         let PointCloud = new THREE.Points(
           geometry,
@@ -137,7 +135,7 @@ function initModel() {
         );
         pointCloudData.push(PointCloud);
         scene.add(PointCloud);
-        resolve([max_x, max_y, min_x, min_y]);
+        resolve([maxX, maxY, minX, minY]);
       });
     }
   });
