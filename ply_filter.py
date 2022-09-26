@@ -13,6 +13,3 @@ el = PlyElement.describe(np.asarray(vertex_element, dtype=[
     ('x', 'd'), ('y', 'd'),  ('z', 'd'),  ('red', 'u1'), ('green', 'u1'), ('blue', 'u1')]), 'vertex')
 with open(FILENAME, mode='wb') as f:
     PlyData([el], text=True).write(f)
-
-
-
